@@ -1,0 +1,408 @@
+{extend name="base"/}
+{block name="title1"}<title xmlns:v-on="http://www.w3.org/1999/xhtml">客户管理</title>{/block}
+{block name="content"}
+<div class="ibox-content" id="app">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4>用户管理</h4>
+            <div class="input-group">
+                <input type="text" placeholder="客户名称" name="search"  id="usernameser" class="form-control input-lg">&nbsp;<input id="emailser"type="text" placeholder="客户电话" name="search" class="form-control input-lg">&nbsp;<input id="phoneser" type="text" placeholder="微信" name="search" class="form-control input-lg">
+                <div class="input-group-btn">
+                    <button class="btn btn-lg btn-primary" v-on:click="serachuser">
+                        搜索
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-8">
+            <div class="title-action">
+                <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5"><i class="fa fa-plus"></i>&nbsp;添加</button>&nbsp;&nbsp;<button onclick="ss()" class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;刷新</button>
+            </div>
+        </div>
+    </div>
+    <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <form id="formadd">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="classname">添加客户</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group  row" style="display: none"><label class="col-sm-2 col-form-label">客户编号</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="customadd.id" id="upid"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">客户名称</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="customadd.username" id="upname"></div>
+                            <div style="color: red;">*</div>
+                        </div>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">客户状态</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="account" v-model="customadd.status" id="upstatus">
+                                    <option>试用</option>
+                                    <option>正式</option>
+                                </select>
+                            </div>
+                            <div style="color: red;">*</div>
+                        </div>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">等级</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="account" v-model="customadd.level" id="uplevel">
+                                    <option>普通客户</option>
+                                    <option>B级客户</option>
+                                    <option>A级客户</option>
+                                    <option>VIP客户</option>
+                                </select>
+                            </div>
+                            <div style="color: red;">*</div>
+                        </div>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">性别</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="account" v-model="customadd.gender" id="upgender">
+                                    <option>男</option>
+                                    <option>女</option>
+                                </select>
+                            </div>
+                            <div style="color: red;">*</div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">手机</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="customadd.phone" id="upphone"></div>
+                            <div style="color: red;">*</div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">微信</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="customadd.weichat" id="upweichat"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">备注</label>
+                            <div class="col-sm-9"><textarea rows="10" cols="75" v-model="customadd.memo" id="upmemo"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addcustom" >提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--    用户数据显示-->
+    <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <form id="formadd">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">客户详细</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">客户姓名</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="name" ></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">客户状态</label>
+                            <div class="col-sm-9"><input type="text" class="form-control"  readonly="readonly" id="status"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">等级</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="level"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">性别</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="gender"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">手机</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="phone"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">微信</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="weichat"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">创建日期</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="createtime"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">更新日期</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="updatetime"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">备注</label>
+                            <div class="col-sm-9"><textarea rows="10" cols="75" v-model="customadd.memo" id="memo" readonly="readonly"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--    显示结束-->
+
+
+    <div class="ibox-content">
+        <table  class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>客户名称</th>
+                <th>状态</th>
+                <th>等级</th>
+                <th>性别</th>
+                <th>手机</th>
+                <th>微信</th>
+                <th>添加日期</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="custom in customs">
+                <td>{{custom.id}}</td>
+                <td>{{custom.name}}</td>
+                <td>{{custom.status}}</td>
+                <td>{{custom.level}}</td>
+                <td>{{custom.gender}}</td>
+                <td>{{custom.phone}}</td>
+                <td>{{custom.weichat}}</td>
+                <td>{{custom.createtime|formatDate}}</td>
+                <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seecustom(custom.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="editcustom(custom.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="deluser(custom.id)"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="hr-line-dashed"></div>
+        <span class="pull-right" id="pages"><button class="btn btn-lg btn-primary" v-on:click="jump('first')">首页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('pre')">上一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('next')">下一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('last')">尾页</button> <span/>
+    </div>
+</div>
+{/block}
+{block name="jss"}
+<script>
+    function ff(value){
+        let date = new Date(value * 1000);
+        let y = date.getFullYear();
+        let MM = date.getMonth() + 1;
+        MM = MM < 10 ? ('0' + MM) : MM;
+        let d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        let h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        let m = date.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        let s = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        return y + '-' + MM + '-' + d + ' ' + h + ':'
+            + m + ':' + s;
+    }
+    $(function () {
+        $('#myModal5').on('hide.bs.modal',function () {
+            $("#formadd")[0].reset();
+        })
+    });
+    function ss() {
+        window.location.reload();
+    }
+    var customdata={
+        customs:[],
+        customadd:[],
+        current_page:1,
+        next_item:""
+    }
+    var app=new Vue({
+        el:'#app',
+        data:customdata,
+        methods:{
+            indexs:function (page=1){
+                axios.post('customlist',{
+                    params:{
+                        page:page
+                    }
+                })
+                    .then(function (response) {
+                        app.customs=response.data.list.data;
+                        app.current_page=response.data.list.current_page;
+                        app.next_item=response.data.list.next_item;
+                        $('pages').innerText=response.data.page;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            addcustom:function(event){
+                var bitians={'name':'客户名称','status':'客户状态','level':'客户等级','gender':'性别','phone':'手机号'};
+                if($("#upid")!=""){
+                    app.customadd.name=$("#upname").val();
+                    app.customadd.staus=$("#upstatus").val();
+                    app.customadd.level=$("#uplevel").val();
+                    app.customadd.genderr=$("#upgender").val();
+                    app.customadd.phone=$("#upphone").val();
+                    app.customadd.weichat=$("#upweichat").val();
+                    app.customadd.memo=$("#upmemo").val();
+                }
+                for(let key in bitians ){
+                    if(Object.keys(app.customadd).indexOf(key)<0){
+                        toastr.error(bitians[key]+'是必填项!');
+                        return false;
+                    }
+                }
+                for(let key1 in app.customadd){
+                    if(key1=='name'){
+                        uPattern =  /^[a-zA-Z\u4e00-\u9fa5]+$/;
+                        console.log(app.customadd[key1]+"-----------------"+uPattern.test(app.customadd[key1]));
+
+                        if(!uPattern.test(app.customadd[key1])){
+                            toastr.error('请输入正确的用户名至少2位且必须是中文!');
+                            return false;
+                        }
+                    }else if(key1=='phone'){
+                        var phoney= /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/;
+                        if(!phoney.test(app.customadd[key1])){
+                            toastr.error('电话号码不正确!');
+                            return false;
+                        }
+                    }
+                }
+                var data=app.customadd;
+                if($("#upid").val()!=""){
+
+                    axios.post('editcustom',{
+                        params:{
+                            id:$("#upid").val(),
+                            name:data.name,
+                            status:data.status,
+                            level:data.level,
+                            gender:data.gender,
+                            phone:data.phone,
+                            weichat:data.weichat,
+                            memo:data.memo
+                        }
+                    })
+                        .then(function (response) {
+                            toastr.success('更新成功');
+                            setTimeout(function () {
+                                $("#myModal5").modal('hide');
+                                $('#myModal5').on('hidden.bs.modal', function () {
+                                    $("#formadd")[0].reset();
+                                });
+                                app.indexs(1);
+                            },600);
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            toastr.success('更新失败');
+                            console.log(error);
+                        })
+                }else{
+                    axios.post('customadd',{
+                        params:{
+                            name:data.name,
+                            status:data.status,
+                            level:data.level,
+                            gender:data.gender,
+                            phone:data.phone,
+                            weichat:data.weichat,
+                            memo:data.memo
+                        }})
+                        .then(function (response) {
+                            toastr.success('提交成功');
+                            setTimeout(function () {
+                                $("#myModal5").modal('hide');
+                                $('#myModal5').on('hidden.bs.modal', function () {
+                                    $("#formadd")[0].reset();
+                                });
+                                app.indexs(1);
+                            },600);
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+                }
+            },
+            jump : function(page) {
+                if ('first' == page && app.current_page!=1) {
+                    app.indexs(1);
+                }
+                if ('pre' == page && app.current_page!=0){
+                    app.indexs(app.current_page-1);
+                }
+                if ('next' == page && app.next_item!=null){
+                    app.indexs(app.current_page+1);
+                }
+                if('last'==page &&app.next_item){
+                    var num=Math.ceil(app.next_item['0'].id/12);
+                    app.indexs(num);
+                }
+            },
+            deluser:function (id) {
+                axios.delete('delcustom?id='+id).then(function (response) {
+                    toastr.success('删除成功!');
+                    setTimeout(function () {
+                        app.indexs(1);
+                    },300);
+                }).catch(function (error) {
+                    toastr.success('删除失败!');
+                    setTimeout(function () {
+                        app.indexs(1);
+                    },300);
+                })
+            },
+            serachuser:function () {
+                var usersercah=null;
+                usersercah.username= $("#usernameser").val();
+                usersercah.email=$("#emailser").val();
+                usersercah.phone=$("#phoneser").val();
+                app.indexs(page=1,usersercah);
+            },
+            seecustom:function (id) {
+                axios.post('getcustom?id='+id)
+                    .then(function (response) {
+                        $("#name").val(response.data.name);
+                        $("#status").val(response.data.status);
+                        $("#level").val(response.data.level);
+                        $("#gender").val(response.data.gender);
+                        $("#phone").val(response.data.phone);
+                        $("#weichat").val(response.data.weichat);
+                        $("#createtime").val(ff(response.data.createtime));
+                        $("#updatetime").val(ff(response.data.updatetime));
+                        $("#memo").val(response.data.memo);
+                        $("#myModal6").modal('show');
+                    }).catch(function (error) {
+                    console.log(error);
+                })
+            },
+            editcustom:function (id) {
+                $("#classname").html("修改客户信息");
+                axios.post('getcustom?id='+id)
+                    .then(function (response) {
+                        $("#myModal5").modal('show');
+                        $("#upid").val(response.data.id);
+                        $("#upname").val(response.data.name);
+                        $("#upstatus").val(response.data.status);
+                        $("#uplevel").val(response.data.level);
+                        $("#upgender").val(response.data.gender);
+                        $("#upphone").val(response.data.phone);
+                        $("#upweichat").val(response.data.weichat);
+                        $("#upmemo").val(response.data.memo);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+        },
+        mounted(){
+            this.indexs();
+        },
+        filters : {
+            formatDate: function (value) {
+                let date = new Date(value * 1000);
+                let y = date.getFullYear();
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? ('0' + MM) : MM;
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                let h = date.getHours();
+                h = h < 10 ? ('0' + h) : h;
+                let m = date.getMinutes();
+                m = m < 10 ? ('0' + m) : m;
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+                return y + '-' + MM + '-' + d + ' ' + h + ':'
+                    + m + ':' + s;
+            }
+        }
+    })
+</script>
+{/block}

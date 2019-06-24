@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>v587  1.0 | 登录</title>
+    <link href="__STATIC__/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__STATIC__/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="__STATIC__/css/animate.css" rel="stylesheet">
+    <link href="__STATIC__/css/style.css" rel="stylesheet">
+
+</head>
+<script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+<!-- Toastr -->
+<script src="__STATIC__/js/plugins/toastr/toastr.min.js"></script>
+
+<body class="gray-bg">
+
+<div class="loginColumns animated fadeInDown">
+    <div class="row" >
+
+        <div class="col-md-6">
+            <h2 class="font-bold">欢迎登录v587  1.0系统</h2>
+
+            <p>土地是以它的肥沃和收获而被估价的；才能也是土地，不过它生产的不是粮食，而是真理。如果只能滋生瞑想和幻想的话，即使再大的才能也只是砂地或盐池，那上面连小草也长不出来的。
+            </p>
+            <p>—— 别林斯基</p>
+        </div>
+        <div class="col-md-6" id="userinfo">
+            <div class="ibox-content">
+
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="用户名" required="" v-model="userdata.loginname">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" placeholder="密码" required="" v-model="userdata.loginpass">
+                    </div>
+                    <button type="submit" class="btn btn-primary block full-width m-b" v-on:click="login">登录</button>
+
+                    <a href="#">
+                        <small>忘记密码?</small>
+                    </a>
+                <p class="m-t">
+                </p>
+            </div>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col-md-6">
+            <small>Copyright inspinia 2.9 &copy; 2017-2018</small>
+        </div>
+        <div class="col-md-6 text-right">
+            cn.inspinia.cn
+        </div>
+    </div>
+</div>
+<script>
+    var  loginuser={
+        userdata:[]
+    };
+    var vue=new Vue({
+        el:"#userinfo",
+        data:loginuser,
+        methods:{
+
+            login:function () {
+                var data=vue.userdata;
+                axios.post('login',{
+                    params:{
+                        username:data.loginname,
+                        password:data.loginpass
+                    }
+                })
+                    .then(function (response) {
+                        if(200==response.data.returncode){
+                            window.location.href ="{:url('index/index/index')}";
+                        }else{
+                            setTimeout(function () {
+                                window.location.reload();
+                            },300);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+        }
+    });
+
+</script>
+</body>
+
+</html>
