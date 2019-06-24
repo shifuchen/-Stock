@@ -9,7 +9,7 @@ use think\Controller;
 use think\Log;
 use think\Request;
 
-class Custom extends Controller
+class Custom extends Common
 {
     public function customManger(){
         return $this->fetch("custommangger");

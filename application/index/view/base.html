@@ -30,8 +30,8 @@
                     <div class="dropdown profile-element">
                         <img alt="image" class="rounded-circle" src="__STATIC__/img/profile_small.jpg"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <span class="block m-t-xs font-bold" id="username">王宇</span>
-                            <span class="text-muted text-xs block" id="role">管理员 <b class="caret"></b></span>
+                            <span class="block m-t-xs font-bold" id="username"></span>
+                            <span class="text-muted text-xs block" id="role"> <b class="caret"></b></span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
                             <li><a class="dropdown-item" href="profile.html">个人信息</a></li>
@@ -55,7 +55,7 @@
                     <a href="{:url("index/custom/customManger")}"><i class="fa fa-user-o"></i> <span class="nav-label">客户管理</span></a>
                 </li>
                 <li>
-                    <a href="{:url("index/department/departmentManger")}"><i class="fa fa-user-o"></i> <span class="nav-label">产品管理</span></a>
+                    <a href="{:url("index/product/index")}"><i class="fa fa-user-o"></i> <span class="nav-label">产品管理</span></a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">图标分析</span><span class="fa arrow"></span></a>
@@ -261,7 +261,6 @@
 <!-- Toastr -->
 <script src="__STATIC__/js/plugins/toastr/toastr.min.js"></script>
 
-{block name="jss"}
 <script>
     window.onload=function () {
         axios.post('getsession')
@@ -291,7 +290,7 @@
     }
 </script>
 
-{/block}
+{block name="jss"}{/block}
 </body>
 
 </html>

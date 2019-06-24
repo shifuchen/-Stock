@@ -34,7 +34,6 @@
         </div>
         <div class="col-md-6" id="userinfo">
             <div class="ibox-content">
-
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="用户名" required="" v-model="userdata.loginname">
                     </div>
@@ -69,7 +68,6 @@
         el:"#userinfo",
         data:loginuser,
         methods:{
-
             login:function () {
                 var data=vue.userdata;
                 axios.post('login',{

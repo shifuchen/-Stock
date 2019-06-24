@@ -11,11 +11,4 @@ class Index extends Common
     {
       return $this->fetch("index");
     }
-
-    public function getsession(){
-        return session("userinfo");
-    }
-    public function logout(){
-        return Session::delete("userinfo");
-    }
 }

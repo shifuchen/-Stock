@@ -4,7 +4,7 @@ use think\Controller;
 use think\Log;
 use think\Request;
 use app\index\util\DateUTil;
-class User extends  Controller
+class User extends  Common
 {
     /**
      * @content 界面跳转
@@ -83,12 +83,4 @@ class User extends  Controller
         $result=$user->save($data,['id'=>$id]);
         return $result? $this->success("更新成功"):$this->error("更新失败");
     }
-
-    public function  getuserinfo($username){
-        $user=new \app\index\model\User();
-        $result=$user::get(['username'=>$username]);
-        return $result;
-    }
-
-
 }

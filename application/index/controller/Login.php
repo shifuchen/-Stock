@@ -17,7 +17,7 @@ class Login extends Controller
         $userinfo=$request->post()['params'];
         $result="";
        if($userinfo){
-            $usercon=new User();
+            $usercon=new \app\index\model\User();
              $userdata=  $usercon->getuserinfo($userinfo['username']);
              Log::error($userdata);
              if($userdata){
@@ -37,6 +37,7 @@ class Login extends Controller
                  $result=json(['msg'=>'用户不存在或已删除','returncode'=>20013]);
              }
        }
+       Log::error($result);
         return $result;
     }
 
