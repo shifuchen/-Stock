@@ -1,2 +1,59 @@
 {extend name="base"/}
-{block name="title1"}<title xmlns:v-on="http://www.w3.org/1999/xhtml">产品管理</title>{/block}c
+{block name="title1"}<title xmlns:v-on="http://www.w3.org/1999/xhtml">产品管理</title>{/block}
+{block name="content"}
+<div class="ibox-content" id="app">
+    <div class="row">
+        <div class="col-sm-4">
+            <h4>产品管理</h4>
+            <div class="input-group">
+                <input type="text" placeholder="产品名称" name="search"  id="usernameser" class="form-control input-lg">&nbsp;<input id="emailser"type="text" placeholder="规格" name="search" class="form-control input-lg">&nbsp;<input id="phoneser" type="text" placeholder="分类" name="search" class="form-control input-lg">
+                <div class="input-group-btn">
+                    <button class="btn btn-lg btn-primary" v-on:click="serachuser">
+                        搜索
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="title-action">
+                <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5"><i class="fa fa-plus"></i>&nbsp;添加</button>&nbsp;&nbsp;<button onclick="ss()" class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;刷新</button>
+            </div>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <table  class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>产品名称</th>
+                <th>规格</th>
+                <th>型号</th>
+                <th>状态</th>
+                <th>销售价格</th>
+                <th>优惠价格</th>
+                <th>库存数</th
+                <th>出售数量</th>
+                <th>添加日期</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="user in users">
+                <td>{{user.id}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.status}}</td>
+                <td>{{user.gender}}</td>
+                <td>{{user.phone}}</td>
+                <td>{{user.tel}}</td>
+                <td>{{user.department}}</td>
+                <td>{{user.department}}</td>
+                <td>{{user.createtime|formatDate}}</td>
+                <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seeuser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="edituser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="deluser(user.id)"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="hr-line-dashed"></div>
+        <span class="pull-right" id="pages"><button class="btn btn-lg btn-primary" v-on:click="jump('first')">首页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('pre')">上一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('next')">下一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('last')">尾页</button> <span/>
+    </div>
+</div>
+{/block}
