@@ -2,6 +2,109 @@
 {block name="title1"}<title xmlns:v-on="http://www.w3.org/1999/xhtml">产品管理</title>{/block}
 {block name="content"}
 <div class="ibox-content" id="app">
+    <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">产品详细</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">产品名称</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="name" ></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">规格</label>
+                        <div class="col-sm-9"><input type="text" class="form-control"  readonly="readonly" id="norms"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">型号</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="type"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">状态</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="status"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">销售价格</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="saleprice"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">优惠价格</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="favoprice"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">库存数</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="Inventorynum"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">已售数量</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="sellnum"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">录入日期</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="create_time"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">更新日期</label>
+                        <div class="col-sm-9"><input type="text" class="form-control" readonly="readonly" id="update_time"></div>
+                    </div>
+                    <div class="form-group  row"><label class="col-sm-2 col-form-label">备注</label>
+                        <div class="col-sm-9"><textarea rows="10" cols="75" id="memo" readonly="readonly"></textarea></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <form id="formadd">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">添加产品</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group  row" style="display: none"><label class="col-sm-2 col-form-label">编号</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="productadd.id" id="upid"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">产品名称</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="productadd.productname" id="upname"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">规格</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="productadd.norms" id="upnorms"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">型号</label>
+                            <div class="col-sm-9"><input type="text" class="form-control" v-model="productadd.type" id="uptype"></div>
+                        </div>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">状态</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="account" v-model="productadd.status" id="upstatus">
+                                    <option>正常</option>
+                                    <option>补货</option>
+                                    <option>积压</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">销售价格</label>
+                            <div class="col-sm-9"><input type="number" class="form-control" v-model="productadd.saleprice" id="upsaleprice"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">优惠价格</label>
+                            <div class="col-sm-9"><input type="number" class="form-control" v-model="productadd.favoprice" id="upfavoprice"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">库存数</label>
+                            <div class="col-sm-9"><input type="number" class="form-control" v-model="productadd.Inventorynum" id="upInventorynum"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">已售数量</label>
+                            <div class="col-sm-9"><input type="number" class="form-control" v-model="productadd.sellnum" id="upsellnum"></div>
+                        </div>
+                        <div class="form-group  row"><label class="col-sm-2 col-form-label">备注</label>
+                            <div class="col-sm-9"><textarea rows="10" cols="75" v-model="productadd.memo" id="upmemo"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addproduct" >提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-4">
             <h4>产品管理</h4>
@@ -31,24 +134,25 @@
                 <th>状态</th>
                 <th>销售价格</th>
                 <th>优惠价格</th>
-                <th>库存数</th
-                <th>出售数量</th>
-                <th>添加日期</th>
+                <th>库存数</th>
+                <th>已售数量</th>
+                <th>录入日期</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            <tr v-for="user in users">
-                <td>{{user.id}}</td>
-                <td>{{user.username}}</td>
-                <td>{{user.status}}</td>
-                <td>{{user.gender}}</td>
-                <td>{{user.phone}}</td>
-                <td>{{user.tel}}</td>
-                <td>{{user.department}}</td>
-                <td>{{user.department}}</td>
-                <td>{{user.createtime|formatDate}}</td>
-                <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seeuser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="edituser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="deluser(user.id)"></i></a></td>
+            <tr v-for="product in products">
+                <td>{{product.id}}</td>
+                <td>{{product.name}}</td>
+                <td>{{product.norms}}</td>
+                <td>{{product.type}}</td>
+                <td>{{product.status}}</td>
+                <td>{{product.saleprice}}</td>
+                <td>{{product.favoprice}}</td>
+                <td>{{product.Inventorynum}}</td>
+                <td>{{product.sellnum}}</td>
+                <td>{{product.create_time}}</td>
+                <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seeproduct(product.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="editproduct(product.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="delproduct(product.id)"></i></a></td>
             </tr>
             </tbody>
         </table>
@@ -56,4 +160,230 @@
         <span class="pull-right" id="pages"><button class="btn btn-lg btn-primary" v-on:click="jump('first')">首页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('pre')">上一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('next')">下一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('last')">尾页</button> <span/>
     </div>
 </div>
+
+
+{/block}
+{block name="jss"}
+<script>
+    function ff(value){
+        let date = new Date(value * 1000);
+        let y = date.getFullYear();
+        let MM = date.getMonth() + 1;
+        MM = MM < 10 ? ('0' + MM) : MM;
+        let d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        let h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        let m = date.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        let s = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        return y + '-' + MM + '-' + d + ' ' + h + ':'
+            + m + ':' + s;
+    }
+    $(function () {
+        $('#myModal5').on('hide.bs.modal',function () {
+            $("#formadd")[0].reset();
+        })
+    });
+    function ss() {
+        window.location.reload();
+    }
+    var productdata={
+        products:[],
+        productadd:[],
+        current_page:1,
+        next_item:""
+    }
+    var app=new Vue({
+        el:'#app',
+        data:productdata,
+        methods:{
+            indexs:function (page=1,usersercah){
+                axios.post('productlist',{
+                    params:{
+                        page:page
+                    }
+                })
+                    .then(function (response) {
+                        app.products=response.data.list.data;
+                        app.current_page=response.data.list.current_page;
+                        app.next_item=response.data.list.next_item;
+                        $('pages').innerText=response.data.page;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            addproduct:function(event){
+              if($("#upid")!="") {
+                  app.productadd.name = $("#upusername").val();
+                  app.productadd.gender = $("#upgender").val();
+                  app.productadd.phone = $("#upphone").val();
+                  app.productadd.tel = $("#uptel").val();
+                  app.productadd.department = $("#updepartment").val();
+                  app.productadd.role = $("#uprole").val();
+                  app.productadd.email = $("#upemail").val();
+                  app.productadd.idcard = $("#upidcard").val();
+                  app.productadd.memo=$("#upmemo").val();
+              }
+                var data=app.productadd;
+                if($("#upid").val()!=""){
+                    axios.post('editproduct',{
+                        params:{
+                            id:$("#upid").val(),
+                            name:data.productname,
+                            norms:data.norms,
+                            type:data.type,
+                            status:data.status,
+                            saleprice:data.saleprice,
+                            favoprice:data.favoprice,
+                            Inventorynum:data.Inventorynum,
+                            sellnum:data.sellnum,
+                            memo:data.memo,
+                        }
+                    })
+                        .then(function (response) {
+                            toastr.success('更新成功');
+                            setTimeout(function () {
+                                $("#myModal5").modal('hide');
+                                $('#myModal5').on('hidden.bs.modal', function () {
+                                    $("#formadd")[0].reset();
+                                });
+                                app.indexs(1);
+                            },600);
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            toastr.success('更新失败');
+                            console.log(error);
+                        })
+                }else{
+                    axios.post('productadd',{
+                        params:{
+                            name:data.productname,
+                            norms:data.norms,
+                            type:data.type,
+                            status:data.status,
+                            saleprice:data.saleprice,
+                            favoprice:data.favoprice,
+                            Inventorynum:data.Inventorynum,
+                            sellnum:data.sellnum,
+                            memo:data.memo,
+                        }})
+                        .then(function (response) {
+                            toastr.success('提交成功');
+                            setTimeout(function () {
+                                $("#myModal5").modal('hide');
+                                $('#myModal5').on('hidden.bs.modal', function () {
+                                    $("#formadd")[0].reset();
+                                });
+                                app.indexs(1);
+                            },600);
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+                }
+            },
+            jump : function(page) {
+                if ('first' == page && app.current_page!=1) {
+                    app.indexs(1);
+                }
+                if ('pre' == page && app.current_page!=0){
+                    app.indexs(app.current_page-1);
+                }
+                if ('next' == page && app.next_item!=null){
+                    app.indexs(app.current_page+1);
+                }
+                if('last'==page &&app.next_item){
+                    var num=Math.ceil(app.next_item['0'].id/12);
+                    app.indexs(num);
+                }
+            },
+            delproduct:function (id) {
+                axios.delete('delproduct?id='+id).then(function (response) {
+                    toastr.success('删除成功!');
+                    setTimeout(function () {
+                        app.indexs(1);
+                    },300);
+                }).catch(function (error) {
+                    toastr.error('删除失败!');
+                    setTimeout(function () {
+                        app.indexs(1);
+                    },300);
+                })
+            },
+            serachuser:function () {
+                var usersercah=null;
+                usersercah.username= $("#usernameser").val();
+                usersercah.email=$("#emailser").val();
+                usersercah.phone=$("#phoneser").val();
+                app.indexs(page=1,usersercah);
+            },
+            seeproduct:function (id) {
+                axios.post('getproduct?id='+id)
+                    .then(function (response) {
+                        console.log(response);
+                        $("#name").val(response.data.name);
+                        $("#norms").val(response.data.norms);
+                        $("#type").val(response.data.type);
+                        $("#status").val(response.data.status);
+                        $("#saleprice").val(response.data.saleprice);
+                        $("#favoprice").val(response.data.favoprice );
+                        $("#Inventorynum").val(response.data.Inventorynum);
+                        $("#sellnum").val(response.data.sellnum);
+                        $("#create_time").val(response.data.create_time);
+                        $("#update_time").val(response.data.update_time);
+                        $("#memo").val(response.data.memo);
+                        $("#myModal6").modal('show');
+                    }).catch(function (error) {
+                    console.log(error);
+                })
+            },
+            editproduct:function (id) {
+                axios.post('getproduct?id='+id)
+                    .then(function (response) {
+                        $("#upid").val(response.data.id);
+                        $("#upname").val(response.data.name);
+                        $("#upnorms").val(response.data.norms);
+                        $("#uptype").val(response.data.type);
+                        $("#upstatus").val(response.data.status);
+                        $("#upsaleprice").val(response.data.saleprice);
+                        $("#upfavoprice").val(response.data.favoprice );
+                        $("#upInventorynum").val(response.data.Inventorynum);
+                        $("#upsellnum").val(response.data.sellnum);
+                        $("#upmemo").val(response.data.memo);
+                        $("#myModal5").modal('show');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+        },
+        mounted(){
+            this.indexs();
+        },
+        filters : {
+            formatDate: function (value) {
+                let date = new Date(value * 1000);
+                let y = date.getFullYear();
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? ('0' + MM) : MM;
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                let h = date.getHours();
+                h = h < 10 ? ('0' + h) : h;
+                let m = date.getMinutes();
+                m = m < 10 ? ('0' + m) : m;
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+                return y + '-' + MM + '-' + d + ' ' + h + ':'
+                    + m + ':' + s;
+            },
+
+        }
+    })
+</script>
 {/block}

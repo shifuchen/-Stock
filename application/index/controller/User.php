@@ -83,4 +83,5 @@ class User extends  Common
         $result=$user->save($data,['id'=>$id]);
         return $result? $this->success("更新成功"):$this->error("更新失败");
     }
+
 }
