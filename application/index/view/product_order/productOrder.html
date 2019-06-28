@@ -1,0 +1,561 @@
+{extend name="base"/}
+{block name="title1"}<title xmlns:v-on="http://www.w3.org/1999/xhtml">订单管理</title>{/block}
+{block name="content"}
+<div class="row">
+    <div class="col-sm-4">
+        <h4>用户管理</h4>
+        <div class="input-group">
+            <input type="text" placeholder="名称" name="search" id="usernameser" class="form-control input-lg" />&nbsp;
+            <input id="emailser" type="text" placeholder="邮箱" name="search" class="form-control input-lg" />&nbsp;
+            <input id="phoneser" type="text" placeholder="电话" name="search" class="form-control input-lg" />
+            <div class="input-group-btn">
+                <button class="btn btn-lg btn-primary" v-on:click="serachuser"> 搜索 </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="title-action">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5"><i class="fa fa-plus"></i>&nbsp;添加</button>&nbsp;&nbsp;
+            <button onclick="ss()" class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;刷新</button>
+        </div>
+    </div>
+</div>
+<div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="formadd">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">录入订单</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group  row" style="display: none">
+                        <label class="col-sm-2 col-form-label">编号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="useradd.id" id="upid" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">下单客户</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="account" v-model="useradd.department" id="upcustom"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">订单状态</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="account" v-model="useradd.department" id="upstatus"> <option>开单</option> <option>已结款</option><option>已发货</option><option>撤单</option><option>退货</option><option>作废</option> </select>
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">折扣</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" v-model="useradd.phone" id="updiscount" />
+                        </div>
+                    </div>
+                    <label class="col-sm-2 col-form-label">订单明细</label>
+                    <label class="col-sm-6 col-form-label"></label>
+                    <label class="col-sm-2 col-form-label"><i class="fa fa-plus" style="float: right" onclick="addmingxi()"></i></label>
+                    <hr>
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label class="col-form-label">编号</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">产品选择</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="col-form-label">数量</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="col-form-label">单价</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-form-label">金额</label>
+                        </div>
+                    </div>
+                    <div id="famingxi">
+                        <div class="form-group row"  id="mingxi">
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control" v-model="useradd.phone" id="upnumid" value="1"  readonly="readonly"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control m-b" name="account" v-model="useradd.department" id="upproduct" ></select>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control" v-model="useradd.phone" id="upnumber" />
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control" v-model="useradd.phone" id="upprice" />
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="number" class="form-control" v-model="useradd.phone" id="upcprice" />
+                            </div>
+                            <div class="col-sm-2">
+                                <i class="fa fa-minus" onclick="removemingxi(this)"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">收件人</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="useradd.tel" id="uptel" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">所在城市</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="account" v-model="useradd.department" id="upcity"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">邮寄地址</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="useradd.email" id="upaddress" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">邮编</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" v-model="useradd.email" id="upcode" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">配送方式</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="account" v-model="useradd.department" id="updelivery"> <option>快递</option> <option>自提</option> </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">支付方式</label>
+                        <div class="col-sm-9">
+                            <select class="form-control m-b" name="account" v-model="useradd.department" id="uppayment"> <option>微信</option> <option>支付宝</option> </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" v-on:click="aduser">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--    用户数据显示-->
+<div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="formadd">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title">用户详细</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">用户名</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="username" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">状态</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="status" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">性别</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="gender" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">手机</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="phone" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">电话</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="tel" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">部门</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="department" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">角色</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="role" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">邮箱</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="email" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">身份证号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="idcard" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">创建日期</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="createtime" />
+                        </div>
+                    </div>
+                    <div class="form-group  row">
+                        <label class="col-sm-2 col-form-label">更新日期</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" readonly="readonly" id="updatetime" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!--    显示结束-->
+<div class="ibox-content">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>订单编号</th>
+            <th>下单客户</th>
+            <th>订单状态</th>
+            <th>折扣</th>
+            <th>收件人</th>
+            <th>所在城市</th>
+            <th>邮寄地址</th>
+            <th>邮编</th>
+            <th>配送方式</th>
+            <th>支付方式</th>
+            <th>录入人</th>
+            <th>下单日期</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="user in users">
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.status}}</td>
+            <td>{{user.gender}}</td>
+            <td>{{user.phone}}</td>
+            <td>{{user.tel}}</td>
+            <td>{{user.department}}</td>
+            <td>{{user.role}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.idcard}}</td>
+            <td>{{user.createtime|formatDate}}</td>
+            <td>{{user.createtime|formatDate}}</td>
+            <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seeuser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="edituser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="deluser(user.id)"></i></a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="hr-line-dashed"></div>
+    <span class="pull-right" id="pages"><button class="btn btn-lg btn-primary" v-on:click="jump('first')">首页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('pre')">上一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('next')">下一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('last')">尾页</button> <span> </span></span>
+</div>
+{/block}
+{block name="jss"}
+<script type="text/javascript" src="http://passport.baidu.com/js/sitedata_bas.js" charset="GBK"></script>
+<script>
+    var i=1;
+    function removemingxi(obj) {
+        i--;
+        var id=$(obj).parent().parent().attr('id');
+        if("mingxi"==id){
+        }
+        else{
+            $('#'+id).remove();
+        }
+    }
+    function addmingxi() {
+
+        i++;
+        var parentdiv=$('<div></div>');
+        parentdiv.addClass("form-group row");
+        parentdiv.attr('id','mingxi'+i);
+        var adhtml=$("#mingxi").html();
+        parentdiv.append(adhtml);
+        parentdiv.children().find("#upnumber").val(i);
+        $("#famingxi").append(parentdiv);
+    };
+    function ff(value){
+        let date = new Date(value * 1000);
+        let y = date.getFullYear();
+        let MM = date.getMonth() + 1;
+        MM = MM < 10 ? ('0' + MM) : MM;
+        let d = date.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        let h = date.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        let m = date.getMinutes();
+        m = m < 10 ? ('0' + m) : m;
+        let s = date.getSeconds();
+        s = s < 10 ? ('0' + s) : s;
+        return y + '-' + MM + '-' + d + ' ' + h + ':'
+            + m + ':' + s;
+    }
+    $(function () {
+        $('#myModal5').on('hide.bs.modal',function () {
+            $("#formadd")[0].reset();
+        })
+    });
+    function ss() {
+        window.location.reload();
+    }
+    var userdata={
+        users:[],
+        useradd:[],
+        current_page:1,
+        next_item:""
+    }
+    var app=new Vue({
+        el:'#app',
+        data:userdata,
+        methods:{
+            indexs:function (page=1,usersercah){
+                axios.post('userlist',{
+                    params:{
+                        page:page
+                    }
+                })
+                    .then(function (response) {
+                        app.users=response.data.list.data;
+                        app.current_page=response.data.list.current_page;
+                        app.next_item=response.data.list.next_item;
+                        $('pages').innerText=response.data.page;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            aduser:function(event){
+                this.selectcustom();
+                if($("#upid")!=""){
+                    app.useradd.username=$("#upusername").val();
+                    app.useradd.gender=$("#upgender").val();
+                    app.useradd.phone=$("#upphone").val();
+                    app.useradd.tel=$("#uptel").val();
+                    app.useradd.department=$("#updepartment").val();
+                    app.useradd.role=$("#uprole").val();
+                    app.useradd.email=$("#upemail").val();
+                    app.useradd.idcard=$("#upidcard").val();
+                }
+                var data=app.useradd;
+                if($("#upid").val()!=""){
+
+                    axios.post('edituser',{
+                        params:{
+                            id:$("#upid").val(),
+                            username:data.username,
+                            gender:data.gender,
+                            phone:data.phone,
+                            tel:data.tel,
+                            department:data.department,
+                            role:data.role,
+                            email:data.email,
+                            idcard:data.idcard,
+                        }
+                    })
+                        .then(function (response) {
+                            toastr.success('更新成功');
+                            setTimeout(function () {
+                                $("#myModal5").modal('hide');
+                                $('#myModal5').on('hidden.bs.modal', function () {
+                                    $("#formadd")[0].reset();
+                                });
+                                app.indexs(1);
+                            },600);
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            toastr.success('更新失败');
+                            console.log(error);
+                        })
+                }else{
+                    axios.post('useradd',{
+                        params:{
+                            username:data.username,
+                            gender:data.gender,
+                            phone:data.phone,
+                            tel:data.tel,
+                            department:data.department,
+                            role:data.role,
+                            email:data.email,
+                            idcard:data.idcard,
+                        }})
+                        .then(function (response) {
+                            toastr.success('提交成功');
+                            setTimeout(function () {
+                                $("#myModal5").modal('hide');
+                                $('#myModal5').on('hidden.bs.modal', function () {
+                                    $("#formadd")[0].reset();
+                                });
+                                app.indexs(1);
+                            },600);
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+                }
+            },
+            jump : function(page) {
+                if ('first' == page && app.current_page!=1) {
+                    app.indexs(1);
+                }
+                if ('pre' == page && app.current_page!=0){
+                    app.indexs(app.current_page-1);
+                }
+                if ('next' == page && app.next_item!=null){
+                    app.indexs(app.current_page+1);
+                }
+                if('last'==page &&app.next_item){
+                    var num=Math.ceil(app.next_item['0'].id/12);
+                    app.indexs(num);
+                }
+            },
+            deluser:function (id) {
+                axios.delete('deluser?id='+id).then(function (response) {
+                    toastr.success('删除成功!');
+                    setTimeout(function () {
+                        app.indexs(1);
+                    },300);
+                }).catch(function (error) {
+                    toastr.success('删除失败!');
+                    setTimeout(function () {
+                        app.indexs(1);
+                    },300);
+                })
+            },
+            serachuser:function () {
+                var usersercah=null;
+                usersercah.username= $("#usernameser").val();
+                usersercah.email=$("#emailser").val();
+                usersercah.phone=$("#phoneser").val();
+                app.indexs(page=1,usersercah);
+            },
+            seeuser:function (id) {
+                axios.post('getuser?id='+id)
+                    .then(function (response) {
+                        $("#username").val(response.data.username);
+                        $("#status").val(response.data.status);
+                        $("#gender").val(response.data.gender);
+                        $("#phone").val(response.data.phone);
+                        $("#tel").val(response.data.tel);
+                        $("#department").val(response.data.department);
+                        $("#role").val(response.data.role);
+                        $("#email").val(response.data.email);
+                        $("#idcard").val(response.data.idcard);
+                        $("#createtime").val(ff(response.data.createtime));
+                        $("#updatetime").val(ff(response.data.updatetime));
+                        $("#myModal6").modal('show');
+                    }).catch(function (error) {
+                    console.log(error);
+                })
+            },
+            edituser:function (id) {
+                axios.post('getuser?id='+id)
+                    .then(function (response) {
+                        $("#myModal5").modal('show');
+                        $("#upid").val(response.data.id);
+                        $("#upusername").val(response.data.username);
+                        $("#upgender").val(response.data.gender);
+                        $("#upphone").val(response.data.phone);
+                        $("#uptel").val(response.data.tel);
+                        $("#updepartment").val(response.data.department);
+                        $("#uprole").val(response.data.role);
+                        $("#upemail").val(response.data.email);
+                        $("#upidcard").val(response.data.idcard);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            selectcustom:function () {
+                axios.post('{:url("index/custom/customlists")}',{
+                })
+                    .then(function (response) {
+                        var select ="<option value='0'>请选择</option>";
+                            $.each(response.data, function (index, value) {
+                                console.log(value);
+                                select += "<option value=" + value.id + ">" + value.name + "</option>";
+                            });
+                        $(select).appendTo($("#upcustom"));
+                      console.log(response.data);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            selectproduct:function () {
+                axios.post('{:url("index/product/productlists")}',{
+                })
+                    .then(function (response) {
+                        var select ="<option value='0'>请选择</option>";
+                        $.each(response.data, function (index, value) {
+                            console.log(value);
+                            select += "<option value=" + value.id + ">" + value.name + "</option>";
+                        });
+                        $(select).appendTo($("#upproduct"));
+                        console.log(response.data);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+            selectcity:function () {
+
+                var select ="<option value='0'>请选择</option>";
+                $.each(arrCity, function (index, value) {
+                    $.each(value['sub'], function (index, value1) {
+                        if(value.name!="请选择"){
+                            select += "<option>" + value.name+"-"+ value1.name+ "</option>";
+                        }
+                    });
+                });
+                $(select).appendTo($("#upcity"));
+
+            }
+        },
+        mounted(){
+            this.indexs();
+            this.selectcustom();
+            this.selectproduct();
+            this.selectcity();
+        },
+        filters : {
+            formatDate: function (value) {
+                let date = new Date(value * 1000);
+                let y = date.getFullYear();
+                let MM = date.getMonth() + 1;
+                MM = MM < 10 ? ('0' + MM) : MM;
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                let h = date.getHours();
+                h = h < 10 ? ('0' + h) : h;
+                let m = date.getMinutes();
+                m = m < 10 ? ('0' + m) : m;
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+                return y + '-' + MM + '-' + d + ' ' + h + ':'
+                    + m + ':' + s;
+            },
+
+        }
+    })
+</script>
+{/block}
