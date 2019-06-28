@@ -11,5 +11,7 @@ namespace app\index\controller;
 
 class ProductOrder extends Common
 {
-    
+    public function productOrder(){
+        return $this->fetch("productOrder");
+    }
 }

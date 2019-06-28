@@ -27,6 +27,12 @@ class Custom extends Common
         $customData['list']=$custom->paginate(12,true,['page'=>$page['params']['page']]);
         return json($customData);
     }
+    public function  customlists(){
+        $custom=new \app\index\model\Custom();
+        $customData['list']=$custom::all();
+        return json($customData['list']);
+    }
+
 
     /**
      * @param Request $request

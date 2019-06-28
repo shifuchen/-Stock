@@ -32,6 +32,11 @@ class Product extends Common
         $productdata['list']=$product->paginate(12,true,['page'=>$serachdata['params']['page']]);
         return json($productdata);
     }
+    public function  productlists(){
+        $product=new \app\index\model\Product();
+        $productdata['list']=$product::all();
+        return json($productdata['list']);
+    }
 
     /**
      * @param $id
