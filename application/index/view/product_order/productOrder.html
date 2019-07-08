@@ -1,330 +1,243 @@
 {extend name="base"/}
 {block name="title1"}<title xmlns:v-on="http://www.w3.org/1999/xhtml">订单管理</title>{/block}
 {block name="content"}
-<div class="row">
-    <div class="col-sm-4">
-        <h4>用户管理</h4>
-        <div class="input-group">
-            <input type="text" placeholder="名称" name="search" id="usernameser" class="form-control input-lg" />&nbsp;
-            <input id="emailser" type="text" placeholder="邮箱" name="search" class="form-control input-lg" />&nbsp;
-            <input id="phoneser" type="text" placeholder="电话" name="search" class="form-control input-lg" />
-            <div class="input-group-btn">
-                <button class="btn btn-lg btn-primary" v-on:click="serachuser"> 搜索 </button>
+<div class="ibox-content" id="app">
+       <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" >
+                <form id="formadd">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">添加订单</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">客户</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="upcustom" v-model="orderadd.status" id="upcustom">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row"><label class="col-sm-2 col-form-label">状态</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="upstatus" v-model="orderadd.status" id="upstatus">
+                                    <option>正常</option>
+                                    <option>补货</option>
+                                    <option>积压</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label class="col-sm-2 col-form-label">订单明细</label>
+                        <label class="col-sm-6 col-form-label"></label>
+                        <label class="col-sm-2 col-form-label"><i class="fa fa-plus" style="float: right" onclick="addmingxi()"></i></label>
+                        <hr>
+                        <div class="form-group row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label" >编号</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="col-form-label">产品选择</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="col-form-label">数量</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="col-form-label">单价</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="col-form-label">金额</label>
+                            </div>
+                        </div>
+                        <div class="fumingxi">
+
+                        </div>
+                        <hr>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">总价格</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" name="upcountprice" v-model="orderadd.upcountprice" id="upcountprice" readonly="readonly"/>
+                            </div>
+                            <div class="col-sm-2">
+                                <span type="submit" class="btn btn-dark" onclick="coutprice()">计算总金额</span>
+                            </div>
+                        </div>
+                        <div class="form-group  row">
+                            <label class="col-sm-2 col-form-label">收件人</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="upaddressee" v-model="orderadd.upaddressee" id="upaddressee" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">所在城市</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="upcity" v-model="orderadd.upcity" id="upcity"></select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">邮寄地址</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="upaddress" v-model="orderadd.upaddress" id="upaddress" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">邮编</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" name="upcode" v-model="orderadd.upcode" id="upcode" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">配送方式</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="updelivery" v-model="orderadd.updelivery" id="updelivery"> <option>快递</option> <option>自提</option> </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">支付方式</label>
+                            <div class="col-sm-9">
+                                <select class="form-control m-b" name="uppayment" v-model="orderadd.uppayment" id="uppayment"> <option>微信</option> <option>支付宝</option> </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addorder" >提交</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="col-sm-8">
-        <div class="title-action">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5"><i class="fa fa-plus"></i>&nbsp;添加</button>&nbsp;&nbsp;
-            <button onclick="ss()" class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;刷新</button>
+    <div class="row">
+        <div class="col-sm-4">
+            <h4>产品管理</h4>
+            <div class="input-group">
+                <input type="text" placeholder="产品名称" name="search"  id="usernameser" class="form-control input-lg">&nbsp;<input id="emailser"type="text" placeholder="规格" name="search" class="form-control input-lg">&nbsp;<input id="phoneser" type="text" placeholder="分类" name="search" class="form-control input-lg">
+                <div class="input-group-btn">
+                    <button class="btn btn-lg btn-primary" v-on:click="serachuser">
+                        搜索
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="title-action">
+                <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5"><i class="fa fa-plus"></i>&nbsp;添加</button>&nbsp;&nbsp;<button onclick="ss()" class="btn btn-primary"><i class="fa fa-refresh"></i>&nbsp;刷新</button>
+            </div>
         </div>
     </div>
-</div>
-<div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="formadd">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">录入订单</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group  row" style="display: none">
-                        <label class="col-sm-2 col-form-label">编号</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="useradd.id" id="upid" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">下单客户</label>
-                        <div class="col-sm-9">
-                            <select class="form-control m-b" name="account" v-model="useradd.department" id="upcustom"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">订单状态</label>
-                        <div class="col-sm-9">
-                            <select class="form-control m-b" name="account" v-model="useradd.department" id="upstatus"> <option>开单</option> <option>已结款</option><option>已发货</option><option>撤单</option><option>退货</option><option>作废</option> </select>
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">折扣</label>
-                        <div class="col-sm-9">
-                            <input type="number" class="form-control" v-model="useradd.phone" id="updiscount" />
-                        </div>
-                    </div>
-                    <label class="col-sm-2 col-form-label">订单明细</label>
-                    <label class="col-sm-6 col-form-label"></label>
-                    <label class="col-sm-2 col-form-label"><i class="fa fa-plus" style="float: right" onclick="addmingxi()"></i></label>
-                    <hr>
-                    <div class="form-group row">
-                        <div class="col-sm-2">
-                            <label class="col-form-label">编号</label>
-                        </div>
-                        <div class="col-sm-3">
-                            <label class="col-form-label">产品选择</label>
-                        </div>
-                        <div class="col-sm-2">
-                            <label class="col-form-label">数量</label>
-                        </div>
-                        <div class="col-sm-2">
-                            <label class="col-form-label">单价</label>
-                        </div>
-                        <div class="col-sm-3">
-                            <label class="col-form-label">金额</label>
-                        </div>
-                    </div>
-                    <div id="famingxi">
-                        <div class="form-group row"  id="mingxi">
-                            <div class="col-sm-2">
-                                <input type="number" class="form-control" v-model="useradd.phone" id="upnumid" value="1"  readonly="readonly"/>
-                            </div>
-                            <div class="col-sm-2">
-                                <select class="form-control m-b" name="account" v-model="useradd.department" id="upproduct" ></select>
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="number" class="form-control" v-model="useradd.phone" id="upnumber" />
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="number" class="form-control" v-model="useradd.phone" id="upprice" />
-                            </div>
-                            <div class="col-sm-2">
-                                <input type="number" class="form-control" v-model="useradd.phone" id="upcprice" />
-                            </div>
-                            <div class="col-sm-2">
-                                <i class="fa fa-minus" onclick="removemingxi(this)"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">收件人</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="useradd.tel" id="uptel" />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">所在城市</label>
-                        <div class="col-sm-9">
-                            <select class="form-control m-b" name="account" v-model="useradd.department" id="upcity"></select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">邮寄地址</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="useradd.email" id="upaddress" />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">邮编</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" v-model="useradd.email" id="upcode" />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">配送方式</label>
-                        <div class="col-sm-9">
-                            <select class="form-control m-b" name="account" v-model="useradd.department" id="updelivery"> <option>快递</option> <option>自提</option> </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">支付方式</label>
-                        <div class="col-sm-9">
-                            <select class="form-control m-b" name="account" v-model="useradd.department" id="uppayment"> <option>微信</option> <option>支付宝</option> </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" v-on:click="aduser">提交</button>
-                </div>
-            </form>
-        </div>
+    <div class="ibox-content">
+        <table  class="table">
+            <thead>
+            <tr>
+                <th>编号</th>
+                <th>产品名称</th>
+                <th>规格</th>
+                <th>型号</th>
+                <th>状态</th>
+                <th>销售价格</th>
+                <th>优惠价格</th>
+                <th>库存数</th>
+                <th>已售数量</th>
+                <th>录入日期</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="orderp in orders">
+                <td>{{orderp.id}}</td>
+                <td>{{orderp.name}}</td>
+                <td>{{orderp.norms}}</td>
+                <td>{{orderp.type}}</td>
+                <td>{{orderp.status}}</td>
+                <td>{{orderp.saleprice}}</td>
+                <td>{{orderp.favoprice}}</td>
+                <td>{{orderp.Inventorynum}}</td>
+                <td>{{orderp.sellnum}}</td>
+                <td>{{orderp.create_time}}</td>
+                <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seeproduct(orderp.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="editproduct(orderp.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="delproduct(orderp.id)"></i></a></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="hr-line-dashed"></div>
+        <span class="pull-right" id="pages"><button class="btn btn-lg btn-primary" v-on:click="jump('first')">首页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('pre')">上一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('next')">下一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('last')">尾页</button> <span/>
     </div>
-</div>
-<!--    用户数据显示-->
-<div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="formadd">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title">用户详细</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">用户名</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="username" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">状态</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="status" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">性别</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="gender" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">手机</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="phone" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">电话</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="tel" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">部门</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="department" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">角色</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="role" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">邮箱</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="email" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">身份证号</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="idcard" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">创建日期</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="createtime" />
-                        </div>
-                    </div>
-                    <div class="form-group  row">
-                        <label class="col-sm-2 col-form-label">更新日期</label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" readonly="readonly" id="updatetime" />
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!--    显示结束-->
-<div class="ibox-content">
-    <table class="table">
-        <thead>
-        <tr>
-            <th>订单编号</th>
-            <th>下单客户</th>
-            <th>订单状态</th>
-            <th>折扣</th>
-            <th>收件人</th>
-            <th>所在城市</th>
-            <th>邮寄地址</th>
-            <th>邮编</th>
-            <th>配送方式</th>
-            <th>支付方式</th>
-            <th>录入人</th>
-            <th>下单日期</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="user in users">
-            <td>{{user.id}}</td>
-            <td>{{user.username}}</td>
-            <td>{{user.status}}</td>
-            <td>{{user.gender}}</td>
-            <td>{{user.phone}}</td>
-            <td>{{user.tel}}</td>
-            <td>{{user.department}}</td>
-            <td>{{user.role}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.idcard}}</td>
-            <td>{{user.createtime|formatDate}}</td>
-            <td>{{user.createtime|formatDate}}</td>
-            <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seeuser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="edituser(user.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="deluser(user.id)"></i></a></td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="hr-line-dashed"></div>
-    <span class="pull-right" id="pages"><button class="btn btn-lg btn-primary" v-on:click="jump('first')">首页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('pre')">上一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('next')">下一页</button>|<button class="btn btn-lg btn-primary" v-on:click="jump('last')">尾页</button> <span> </span></span>
 </div>
 {/block}
 {block name="jss"}
 <script type="text/javascript" src="http://passport.baidu.com/js/sitedata_bas.js" charset="GBK"></script>
 <script>
-    var i=1;
-    function removemingxi(obj) {
-        i--;
-        var id=$(obj).parent().parent().attr('id');
-        if("mingxi"==id){
-        }
-        else{
-            $('#'+id).remove();
-        }
-    }
+    var i=0;
     function addmingxi() {
-
         i++;
         var parentdiv=$('<div></div>');
+        var upmid="upmid";
+        var upproduct="upproduct";
+        var upnumber="upnumber";
+        var upprice="upprice";
+        var countss="countss";
         parentdiv.addClass("form-group row");
         parentdiv.attr('id','mingxi'+i);
-        var adhtml=$("#mingxi").html();
+        var adhtml="<div class=\"col-sm-2\">\n" +
+            "                                <input type=\"number\" class=\"form-control\" name="+upmid+i+" v-model=\"orderadd.upnumid\" id="+upmid+i+" value="+i+"  readonly=\"readonly\"/>\n" +
+            "                            </div>\n" +
+            "                            <div class=\"col-sm-2\">\n" +
+            "                                <select class=\"form-control m-b\" name="+upproduct+i+" v-model=\"orderadd.upproduct\" id="+upproduct+i+" ></select>\n" +
+            "                            </div>\n" +
+            "                            <div class=\"col-sm-2\">\n" +
+            "                                <input type=\"number\" class=\"form-control\" name="+upnumber+i+" v-model=\"orderadd.upnumber\" id="+upnumber+i+" />\n" +
+            "                            </div>\n" +
+            "                            <div class=\"col-sm-2\">\n" +
+            "                                <input type=\"number\" class=\"form-control\" name="+upprice+i+" v-model=\"orderadd.upprice\" id="+upprice+i+" onkeyup=\"count(this)\"/>\n" +
+            "                            </div>\n" +
+            "                            <div class=\"col-sm-2\">\n" +
+            "                                <input type=\"number\" class=\"form-control\" name="+countss+i+" v-model=\"orderadd.upcprice\" id="+countss+i+"  readonly=\"readonly\" />\n" +
+            "                            </div>\n" +
+            "                            <div class=\"col-sm-2\">\n" +
+            "                                <i class=\"fa fa-minus\" onclick=\"removemingxi(this)\"></i>\n" +
+            "                            </div>";
         parentdiv.append(adhtml);
-        parentdiv.children().find("#upnumber").val(i);
-        $("#famingxi").append(parentdiv);
-    };
-    function ff(value){
-        let date = new Date(value * 1000);
-        let y = date.getFullYear();
-        let MM = date.getMonth() + 1;
-        MM = MM < 10 ? ('0' + MM) : MM;
-        let d = date.getDate();
-        d = d < 10 ? ('0' + d) : d;
-        let h = date.getHours();
-        h = h < 10 ? ('0' + h) : h;
-        let m = date.getMinutes();
-        m = m < 10 ? ('0' + m) : m;
-        let s = date.getSeconds();
-        s = s < 10 ? ('0' + s) : s;
-        return y + '-' + MM + '-' + d + ' ' + h + ':'
-            + m + ':' + s;
-    }
-    $(function () {
-        $('#myModal5').on('hide.bs.modal',function () {
-            $("#formadd")[0].reset();
+        axios.post('{:url("index/product/productlists")}',{
         })
-    });
-    function ss() {
-        window.location.reload();
+            .then(function (response) {
+                var select ="<option value='0'>请选择</option>";
+                $.each(response.data, function (index, value) {
+                    select += "<option value=" + value.id + ">" + value.name + "</option>";
+                });
+                $(select).appendTo($("#upproduct"+i));
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+        $(".fumingxi").append(parentdiv);
+    };
+    function removemingxi(obj) {
+        var id=$(obj).parent().parent().attr('id');
+            i--;
+            $('#'+id).remove();
     }
-    var userdata={
-        users:[],
-        useradd:[],
+    function count(obj) {
+        var pricce=$(obj).val();
+        var num=$(obj).parent().prev().children().val();
+        $(obj).parent().next().children().val(pricce*num);
+    }
+    function coutprice() {
+        var co=$("form").serializeArray();
+        var countxx=0;
+        $.each(co,function (index,value) {
+            if(value['name'].indexOf('countss')>=0){
+                countxx+=parseFloat(value['value']);
+            }
+        });
+        $("#upcountprice").val(countxx);
+    }
+    var orderdata={
+        orders:[],
+        orderadd:[],
         current_page:1,
         next_item:""
     }
     var app=new Vue({
         el:'#app',
-        data:userdata,
+        data:orderdata,
         methods:{
             indexs:function (page=1,usersercah){
                 axios.post('userlist',{
@@ -342,76 +255,27 @@
                         console.log(error);
                     })
             },
-            aduser:function(event){
-                this.selectcustom();
-                if($("#upid")!=""){
-                    app.useradd.username=$("#upusername").val();
-                    app.useradd.gender=$("#upgender").val();
-                    app.useradd.phone=$("#upphone").val();
-                    app.useradd.tel=$("#uptel").val();
-                    app.useradd.department=$("#updepartment").val();
-                    app.useradd.role=$("#uprole").val();
-                    app.useradd.email=$("#upemail").val();
-                    app.useradd.idcard=$("#upidcard").val();
-                }
-                var data=app.useradd;
-                if($("#upid").val()!=""){
-
-                    axios.post('edituser',{
-                        params:{
-                            id:$("#upid").val(),
-                            username:data.username,
-                            gender:data.gender,
-                            phone:data.phone,
-                            tel:data.tel,
-                            department:data.department,
-                            role:data.role,
-                            email:data.email,
-                            idcard:data.idcard,
-                        }
+            addorder:function(event){
+                var co=$("form").serializeArray();
+                var data=co;
+                console.log(data);
+                axios.post('orderadd',{
+                    params:{
+                        data:data
+                    }})
+                    .then(function (response) {
+                        toastr.success('提交成功');
+                        setTimeout(function () {
+                            $("#myModal5").modal('hide');
+                            $('#myModal5').on('hidden.bs.modal', function () {
+                                $("#formadd")[0].reset();
+                            });
+                            app.indexs(1);
+                        },600);
                     })
-                        .then(function (response) {
-                            toastr.success('更新成功');
-                            setTimeout(function () {
-                                $("#myModal5").modal('hide');
-                                $('#myModal5').on('hidden.bs.modal', function () {
-                                    $("#formadd")[0].reset();
-                                });
-                                app.indexs(1);
-                            },600);
-                            console.log(response);
-                        })
-                        .catch(function (error) {
-                            toastr.success('更新失败');
-                            console.log(error);
-                        })
-                }else{
-                    axios.post('useradd',{
-                        params:{
-                            username:data.username,
-                            gender:data.gender,
-                            phone:data.phone,
-                            tel:data.tel,
-                            department:data.department,
-                            role:data.role,
-                            email:data.email,
-                            idcard:data.idcard,
-                        }})
-                        .then(function (response) {
-                            toastr.success('提交成功');
-                            setTimeout(function () {
-                                $("#myModal5").modal('hide');
-                                $('#myModal5').on('hidden.bs.modal', function () {
-                                    $("#formadd")[0].reset();
-                                });
-                                app.indexs(1);
-                            },600);
-                            console.log(response);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        })
-                }
+                    .catch(function (error) {
+                        console.log(error);
+                    })
             },
             jump : function(page) {
                 if ('first' == page && app.current_page!=1) {
@@ -490,35 +354,16 @@
                 })
                     .then(function (response) {
                         var select ="<option value='0'>请选择</option>";
-                            $.each(response.data, function (index, value) {
-                                console.log(value);
-                                select += "<option value=" + value.id + ">" + value.name + "</option>";
-                            });
-                        $(select).appendTo($("#upcustom"));
-                      console.log(response.data);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-            },
-            selectproduct:function () {
-                axios.post('{:url("index/product/productlists")}',{
-                })
-                    .then(function (response) {
-                        var select ="<option value='0'>请选择</option>";
                         $.each(response.data, function (index, value) {
-                            console.log(value);
                             select += "<option value=" + value.id + ">" + value.name + "</option>";
                         });
-                        $(select).appendTo($("#upproduct"));
-                        console.log(response.data);
+                        $(select).appendTo($("#upcustom"));
                     })
                     .catch(function (error) {
                         console.log(error);
                     })
             },
             selectcity:function () {
-
                 var select ="<option value='0'>请选择</option>";
                 $.each(arrCity, function (index, value) {
                     $.each(value['sub'], function (index, value1) {
@@ -534,7 +379,6 @@
         mounted(){
             this.indexs();
             this.selectcustom();
-            this.selectproduct();
             this.selectcity();
         },
         filters : {
@@ -554,7 +398,6 @@
                 return y + '-' + MM + '-' + d + ' ' + h + ':'
                     + m + ':' + s;
             },
-
         }
     })
 </script>
