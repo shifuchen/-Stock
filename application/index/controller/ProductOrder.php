@@ -22,6 +22,7 @@ class ProductOrder extends Common
         return $this->fetch("productOrder");
     }
     public function orderadd(Request $request){
+        $result=false;
         $session=new Session();
         $dataUtil=new DateUTil();
         $data=$request->post()['params'];
@@ -64,8 +65,16 @@ class ProductOrder extends Common
                 $data2['orderid']=$getid;
                 $data2['create_time']=$dataUtil->getMillisecond()/1000;
                 $i++;
-                Db::table("orderdetail")->insert($data2);
+                $result= Db::table("orderdetail")->insert($data2);
             }
+            return $result?$this->success("添加成功!"):$this->error("添加失败!");
+    }
 
+    public function  orderlist(Request $request){
+        $serachdata=$request->param();
+        $order=new \app\index\model\productOrder();
+//        $orderdata['list']=$order->paginate(12,true,['page'=>$serachdata['params']['page']]);
+        $orderdata['list']= Db::table("productorder")->alias("a")->join('custom b',"a.custom_id=b.id")->paginate(12,true,['page'=>$serachdata['params']['page']]);
+        return json($orderdata);
     }
 }

@@ -128,14 +128,16 @@
             <thead>
             <tr>
                 <th>编号</th>
-                <th>产品名称</th>
-                <th>规格</th>
-                <th>型号</th>
+                <th>客户</th>
                 <th>状态</th>
-                <th>销售价格</th>
-                <th>优惠价格</th>
-                <th>库存数</th>
-                <th>已售数量</th>
+                <th>总价格</th>
+                <th>收件人</th>
+                <th>所在城市</th>
+                <th>邮寄地址</th>
+                <th>邮编</th>
+                <th>配送方式</th>
+                <th>支付方式</th>
+                <th>录入人</th>
                 <th>录入日期</th>
                 <th>操作</th>
             </tr>
@@ -144,13 +146,15 @@
             <tr v-for="orderp in orders">
                 <td>{{orderp.id}}</td>
                 <td>{{orderp.name}}</td>
-                <td>{{orderp.norms}}</td>
-                <td>{{orderp.type}}</td>
                 <td>{{orderp.status}}</td>
-                <td>{{orderp.saleprice}}</td>
-                <td>{{orderp.favoprice}}</td>
-                <td>{{orderp.Inventorynum}}</td>
-                <td>{{orderp.sellnum}}</td>
+                <td>{{orderp.countprice}}</td>
+                <td>{{orderp.addresee}}</td>
+                <td>{{orderp.city}}</td>
+                <td>{{orderp.address}}</td>
+                <td>{{orderp.yxcode}}</td>
+                <td>{{orderp.delivery}}</td>
+                <td>{{orderp.payment}}</td>
+                <td>{{orderp.input_user}}</td>
                 <td>{{orderp.create_time}}</td>
                 <td><a class="btn btn-default"><i class="fa fa-search tt" v-on:click="seeproduct(orderp.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-pencil tt" v-on:click="editproduct(orderp.id)"></i></a>&nbsp;<a class="btn btn-default"><i class="fa fa-trash tt" v-on:click="delproduct(orderp.id)"></i></a></td>
             </tr>
@@ -241,13 +245,13 @@
         data:orderdata,
         methods:{
             indexs:function (page=1,usersercah){
-                axios.post('userlist',{
+                axios.post('orderlist',{
                     params:{
                         page:page
                     }
                 })
                     .then(function (response) {
-                        app.users=response.data.list.data;
+                        app.orders=response.data.list.data;
                         app.current_page=response.data.list.current_page;
                         app.next_item=response.data.list.next_item;
                         $('pages').innerText=response.data.page;
@@ -265,7 +269,6 @@
                         data:data
                     }})
                     .then(function (response) {
-                        return false;
                         toastr.success('提交成功');
                         setTimeout(function () {
                             $("#myModal5").modal('hide');
