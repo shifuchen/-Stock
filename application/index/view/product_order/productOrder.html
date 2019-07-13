@@ -168,11 +168,11 @@
     function addmingxi() {
         i++;
         var parentdiv=$('<div></div>');
-        var upmid="upmid";
-        var upproduct="upproduct";
-        var upnumber="upnumber";
-        var upprice="upprice";
-        var countss="countss";
+        var upmid="upmid_";
+        var upproduct="upproduct_";
+        var upnumber="upnumber_";
+        var upprice="upprice_";
+        var countss="countss_";
         parentdiv.addClass("form-group row");
         parentdiv.attr('id','mingxi'+i);
         var adhtml="<div class=\"col-sm-2\">\n" +
@@ -201,7 +201,8 @@
                 $.each(response.data, function (index, value) {
                     select += "<option value=" + value.id + ">" + value.name + "</option>";
                 });
-                $(select).appendTo($("#upproduct"+i));
+                console.log("#upproduct_"+i);
+                $(select).appendTo($("#upproduct_"+i));
                 console.log(response);
             })
             .catch(function (error) {
@@ -264,6 +265,7 @@
                         data:data
                     }})
                     .then(function (response) {
+                        return false;
                         toastr.success('提交成功');
                         setTimeout(function () {
                             $("#myModal5").modal('hide');
@@ -373,7 +375,6 @@
                     });
                 });
                 $(select).appendTo($("#upcity"));
-
             }
         },
         mounted(){
