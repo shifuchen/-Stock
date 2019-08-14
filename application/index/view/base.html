@@ -22,6 +22,31 @@
 <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
 
 <body class="">
+<div class="modal inmodal fade" id="myModa28" tabindex="1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">设置密码</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group  row" ><label class="col-sm-2 col-form-label">当前登录用户</label>
+                    <div class="col-sm-9"><label class="col-sm-2 col-form-label" id="user" style="color: red;"></label></div>
+                </div>
+                <div class="form-group  row" ><label class="col-sm-2 col-form-label">请输入密码:</label>
+                    <div class="col-sm-9"><input type="password" class="form-control" id="password1"></div>
+                </div>
+                <div class="form-group  row" ><label class="col-sm-2 col-form-label">请再次输入密码:</label>
+                    <div class="col-sm-9"><input type="password" class="form-control" id="password2"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="subpassword()" >提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="wrapper">
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
@@ -34,9 +59,8 @@
                             <span class="text-muted text-xs block" id="srole"> <b class="caret"></b></span>
                         </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a class="dropdown-item" href="profile.html">个人信息</a></li>
-                            <li><a class="dropdown-item" href="contacts.html">好友</a></li>
-                            <li><a class="dropdown-item" href="mailbox.html">信箱</a></li>
+                            <li><a class="dropdown-item" href="profile.html" >个人信息</a></li>
+                            <li><a class="dropdown-item" onclick="editpassword()" data-toggle="modal" data-target="#myModa28">修改密码</a></li>
                             <li class="dropdown-divider"></li>
                             <li><a class="dropdown-item" onclick="logout()">登出</a></li>
                         </ul>
@@ -265,11 +289,41 @@
 <script src="__STATIC__/js/plugins/toastr/toastr.min.js"></script>
 
 <script>
+    var userdata="";
     window.onload=function () {
         axios.post('getsession')
             .then(function (response) {
                 $("#susername").html(response.data.username);
                 $("#srole").html(response.data.role);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+    function editpassword(){
+        axios.post('getsession')
+            .then(function (response) {
+                userdata=response.data;
+                $("#user").html(response.data.username);
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+    }
+    function subpassword() {
+        var password1=$("#password1").val();
+        var password2=$("#password2").val();
+        if(password2!=password1){
+            alert("两次密码不一致!");
+        }
+        alert(userdata.id);
+        axios.post("{:url('index/user/editpasword')}",{
+            params:{
+                id:userdata.id,
+                password:$("#password1")
+            }})
+            .then(function (response) {
+
             })
             .catch(function (error) {
                 console.log(error);
